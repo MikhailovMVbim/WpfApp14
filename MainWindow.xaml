@@ -1,0 +1,57 @@
+﻿<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="600">
+    <Window.Resources>
+        <local:ProductImagePath x:Key="getPath"/>
+
+        <DataTemplate x:Key="lstTemplate">
+            <Border x:Name="border" BorderBrush="GreenYellow" BorderThickness="2" Margin="5" Padding="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold" Text="Название товара:"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Стоимость:"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Категория:"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="{Binding Path=ProductName}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProductPrice}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" FontStyle="Italic" Text="{Binding Path=ProductCategory}"/>
+                    <Image Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" Width="30" Height="30" Source="{Binding Path=ProductCategory, Converter={StaticResource getPath}}"/>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=ProductCategory}">
+                    <DataTrigger.Value>
+                        <local:ProductCategories>БытоваяТехника</local:ProductCategories>
+                    </DataTrigger.Value>
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FF344981"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
+    <StackPanel>
+        <TextBlock Margin="50 0 0 0" Text="СПИСОК ТОВАРОВ:"/>
+        <ListBox x:Name="lstBox" Width="500" Height="250" Margin="10" ItemTemplate="{StaticResource lstTemplate}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+        <UniformGrid Columns="3">
+            <TextBlock Margin="10 0 10 0" Text="Название товара:"/>
+            <TextBlock Margin="10 0 10 0" Text="Цена товара:"/>
+            <TextBlock Margin="10 0 10 0" Text="Категория товара:"/>
+            <TextBox Margin="10 0 10 0" x:Name="newProductName"/>
+            <TextBox Margin="10 0 10 0" x:Name="newProductPrice"/>
+            <ComboBox Margin="10 0 10 0" x:Name="newProductCategory"/>
+        </UniformGrid>
+        <Button Margin="10 20 10 0" Content="Добавить новый продукт" Click="Button_Click"/>
+    </StackPanel>
+</Window>
